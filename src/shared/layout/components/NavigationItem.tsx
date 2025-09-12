@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { Typography } from "@mui/material";
+import { usePathname } from "next/navigation";
 
 import { IconType } from "react-icons";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
@@ -19,14 +18,9 @@ const NavigationItem = ({
   path,
   Icon,
 }: NavigationItemProps) => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const isModuleActive = useMemo(() => pathname === path && pathname !== '/', [pathname, path]);
-
-  const handleNavigate = (path: string) => {
-    router.push(path);
-  };
 
   return (
     <Link href={path}>

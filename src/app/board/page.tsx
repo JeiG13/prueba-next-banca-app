@@ -3,6 +3,7 @@ import SectionTitle from '@/shared/components/SectionTitle';
 import BankCardsList from '@/features/board/templates/BankCardsList';
 import AccountsList from '@/features/board/templates/AccountsList';
 import RecentTransactionsTable from '@/features/board/templates/RecentTransactionsTable';
+import AllTransactionsButton from '@/features/board/components/AllTransactionsButton';
 
 function page() {
   return (
@@ -11,7 +12,10 @@ function page() {
       <BankCardsList />
       <SectionTitle title="Cuentas" />
       <AccountsList />
-      <SectionTitle title="Transacciones recientes" />
+      <SectionTitle
+        title="Transacciones recientes"
+        Action={<AllTransactionsButton />}
+      />
       <RecentTransactionsTable />
     </div>
   )

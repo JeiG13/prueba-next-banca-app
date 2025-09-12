@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { ReduxStatus } from "@/shared/enums/reduxStatusEnum";
 import { IAccount } from "@/shared/interfaces/Account"
 import { ITransaction } from "@/shared/interfaces/Transaction";
-import { getAccountsMock, getAccountTransactions, getUserAccount } from "../thunks/accountThunk";
+import { getAccountsMock, getAccountTransactions, getRecentTransactions, getUserAccount } from "../thunks/accountThunk";
 
 type AccountState = {
   account: IAccount | undefined;
@@ -14,6 +14,8 @@ type AccountState = {
   accountsMockStatus: ReduxStatus;
   accountTransactions: ITransaction[];
   accountTransactionsStatus: ReduxStatus;
+  accountRecentTransactions: ITransaction[];
+  accountRecentTransactionsStatus: ReduxStatus;
 };
 
 const initialState: AccountState = {
@@ -23,6 +25,8 @@ const initialState: AccountState = {
   accountsMockStatus: ReduxStatus.idle,
   accountTransactions: [],
   accountTransactionsStatus: ReduxStatus.idle,
+  accountRecentTransactions: [],
+  accountRecentTransactionsStatus: ReduxStatus.idle,
 };
 
 const accountSlice = createSlice({
@@ -60,18 +64,18 @@ const accountSlice = createSlice({
       toast.success('La cuentas se han obtenido con éxito');
     });
 
-    builder.addCase(getAccountTransactions.pending, (state) => {
-      state.accountTransactionsStatus = ReduxStatus.pending;
+    builder.addCase(getRecentTransactions.pending, (state) => {
+      state.accountRecentTransactionsStatus = ReduxStatus.pending;
     });
-    builder.addCase(getAccountTransactions.rejected, (state) => {
-      state.accountTransactionsStatus = ReduxStatus.failed;
-      state.accountTransactions = initialState.accountTransactions;
-      toast.error('Ha ocurrido un error al obtener tus cuentas');
+    builder.addCase(getRecentTransactions.rejected, (state) => {
+      state.accountRecentTransactionsStatus = ReduxStatus.failed;
+      state.accountRecentTransactions = initialState.accountRecentTransactions;
+      toast.error('Ha ocurrido un error al obtener las transacciones recientes');
     });
-    builder.addCase(getAccountTransactions.fulfilled, (state, action) => {
-      state.accountTransactionsStatus = ReduxStatus.failed;
-      state.accountTransactions = action.payload.items;
-      toast.success('La cuentas se han obtenido con éxito');
+    builder.addCase(getRecentTransactions.fulfilled, (state, action) => {
+      state.accountRecentTransactionsStatus = ReduxStatus.failed;
+      state.accountRecentTransactions = action.payload;
+      toast.success('La transacciones recientes se han obtenido con éxito');
     });
   }
 });

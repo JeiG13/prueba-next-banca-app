@@ -9,4 +9,5 @@ export interface ITransaction {
   origin: string;
   destination: string;
   transaction_date: string;
+  balance?: number;
 }
