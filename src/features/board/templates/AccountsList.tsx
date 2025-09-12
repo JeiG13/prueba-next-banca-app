@@ -18,7 +18,7 @@ function AccountsList() {
   }, [dispatch]);
 
   return (
-    <div className="w-full mt-6 grid grid-cols-3 gap-6 mb-10">
+    <div className="w-full mt-6 grid xs:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
       {
         accountsMock.map((account) => (
           <AccountCard

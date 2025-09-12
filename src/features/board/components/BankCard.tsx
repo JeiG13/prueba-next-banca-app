@@ -23,8 +23,34 @@ function BankCard({ bankCard }: BankCardProp) {
           width={86}
         />
       </div>
-      <div className="w-full">
-        BankCard
+      <div className="w-full mt-10">
+        <h1
+          className="text-white font-lato font-medium text-2xl whitespace-pre"
+        >
+          {bankCard.cardNumber}
+        </h1>
+      </div>
+      <div className="w-full mt-10 grid grid-cols-3 gap-2 items-end">
+        <div>
+          <h1
+            className="text-white font-lato font-medium text-xs"
+          >
+            {bankCard.name}
+          </h1>
+        </div>
+
+        <div className="flex flex-col">
+          <h1
+            className="text-white font-lato font-medium text-[8px]"
+          >
+            Expire date
+          </h1>
+                    <h1
+            className="text-white font-lato font-medium text-xs"
+          >
+            {bankCard.expirationDate}
+          </h1>
+        </div>
       </div>
     </div>
   )
