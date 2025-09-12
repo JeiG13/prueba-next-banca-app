@@ -12,6 +12,7 @@ import UserPicture from "@/shared/assets/users/UserProfile.jpg";
 const AppTopbar = () => {
   const dispatch = useAppDispatch();
   const { isDrawerOpen } = useAppSelector((state) => state.ui);
+  const { loggedUser } = useAppSelector((state) => state.user);
 
   return (
     <header
@@ -47,12 +48,9 @@ const AppTopbar = () => {
             className="mr-6"
           />
 
-          <Image
-            src={UserPicture}
-            className="rounded-full"
-            alt="User profile picture"
-            height={40}
-            width={40}
+          <Avatar
+            className="h-[40] w-[40]"
+            src={loggedUser?.profile_photo}
           />
         </div>
       </div>

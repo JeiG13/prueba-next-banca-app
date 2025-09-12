@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
+
+import { Bounce, ToastContainer } from "react-toastify";
+
 import "./globals.css";
-import { StoreProvider } from "./StoreProvider";
+
 import AppTopbar from "@/shared/layout/templates/AppTopbar";
 import AppDrawer from "@/shared/layout/templates/AppDrawer";
 import AppContentWrapper from "@/shared/layout/templates/AppContentWrapper";
+
+import { StoreProvider } from "./StoreProvider";
 
 const poppinsSans = Poppins({
   variable: "--font-poppins",
@@ -13,7 +18,7 @@ const poppinsSans = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Prueba tecnica",
+  title: "Banca net",
   description: "App prueba tecnica",
 };
 
@@ -33,6 +38,21 @@ export default function RootLayout({
           <AppContentWrapper>
             {children}
           </AppContentWrapper>
+
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+            style={{ zIndex: 99999 }}
+          />
         </body>
       </StoreProvider>
     </html>

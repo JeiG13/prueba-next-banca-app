@@ -1,12 +1,19 @@
+import { ReactNode } from "react";
+
 type SectionTitleProps = {
   title: string;
+  Action?: ReactNode;
 }
 
-function SectionTitle({ title }: SectionTitleProps) {
+function SectionTitle({ title, Action }: SectionTitleProps) {
   return (
-    <h1 className="text-xl font-semibold text-[#272727]">
-      {title}
-    </h1>
+    <div className="w-full flex justify-between items-center">
+      <h1 className="text-xl font-semibold text-[#272727]">
+        {title}
+      </h1>
+
+      {Action && Action}
+    </div>
   )
 }
 
