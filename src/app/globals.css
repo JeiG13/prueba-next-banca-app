@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 @import "tailwindcss";
+@import 'react-toastify/dist/ReactToastify.css';
 
 :root {
   --background: #ffffff;
@@ -21,4 +22,8 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins);
+}
+
+:root {
+  --toastify-toast-width: 400px;
 }
