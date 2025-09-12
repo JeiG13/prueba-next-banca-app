@@ -1,5 +1,5 @@
+import React from 'react';
 import SectionTitle from '@/shared/components/SectionTitle';
-import React from 'react'
 
 function page() {
   return (

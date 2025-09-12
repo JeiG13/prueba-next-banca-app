@@ -1,0 +1,23 @@
+import { generateAccountsMock } from "@/shared/helpers/generateAccountsMock";
+import { getAccountByNumberRequest, getAccountTransactionsByNumberRequest } from "@/shared/services/api/accounts/accountsService";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+
+export const getUserAccount = createAsyncThunk('account/getUserAccount', async (accountNumber: number) => {
+  const { data } = await getAccountByNumberRequest(accountNumber);
+
+  return data;
+});
+
+export const getAccountsMock = createAsyncThunk('account/getAccountsMock', async (accountNumber: number) => {
+  const { data } = await getAccountByNumberRequest(accountNumber);
+
+  // Generar mock de cuentas del usuario
+  const accounts = generateAccountsMock(data);
+  return accounts;
+});
+
+export const getAccountTransactions = createAsyncThunk('account/getAccountTransactions', async (accountNumber: number) => {
+  const { data } = await getAccountTransactionsByNumberRequest(accountNumber);
+
+  return data;
+});

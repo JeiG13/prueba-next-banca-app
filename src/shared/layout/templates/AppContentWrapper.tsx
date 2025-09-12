@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/store/hooks";
 import { getUserInfo } from "@/shared/store/thunks/userThunk";
 
 import { drawerWidth } from "../constants/drawerWidth";
+import { resetUserSlice } from "@/shared/store/slices/userSlice";
 
 type AppContentWrapperProps = {
   children: React.ReactNode;
@@ -18,6 +19,10 @@ const AppContentWrapper = ({ children }: AppContentWrapperProps) => {
   
   useEffect(() => {
     dispatch(getUserInfo(1));
+
+    return () => {
+      dispatch(resetUserSlice());  
+    }
   }, [dispatch]);
 
   return (

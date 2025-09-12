@@ -1,6 +1,9 @@
+import { CurrencyCode } from "../helpers/getCurrencyByCode";
 export interface IAccount {
-  alias:string;
+  id?: number,
+  alias: string;
   account_number: number;
   balance: number;
-  currency: string;
+  currency: CurrencyCode;
+  country_code?: string;
 }
