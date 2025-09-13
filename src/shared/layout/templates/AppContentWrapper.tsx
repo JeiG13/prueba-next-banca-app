@@ -37,7 +37,7 @@ const AppContentWrapper = ({ children }: AppContentWrapperProps) => {
     >
       <div className="flex items-center justify-between px-4 my-1 h-16" />
 
-      <div className="w-full">{children}</div>
+      <div className="w-full px-4 py-6">{children}</div>
     </main>
   );
 };

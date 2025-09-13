@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { ReduxStatus } from "@/shared/enums/reduxStatusEnum";
 import { IAccount } from "@/shared/interfaces/Account"
 import { ITransaction } from "@/shared/interfaces/Transaction";
-import { getAccountsMock, getAccountTransactions, getRecentTransactions, getUserAccount } from "../thunks/accountThunk";
+import { getAccountsMock, getAccountTransactions, getMyTransactions, getRecentTransactions, getUserAccount } from "../thunks/accountThunk";
 
 type AccountState = {
   account: IAccount | undefined;
@@ -16,6 +16,8 @@ type AccountState = {
   accountTransactionsStatus: ReduxStatus;
   accountRecentTransactions: ITransaction[];
   accountRecentTransactionsStatus: ReduxStatus;
+  myTransactions: ITransaction[];
+  myTransactionsStatus: ReduxStatus;
 };
 
 const initialState: AccountState = {
@@ -27,6 +29,8 @@ const initialState: AccountState = {
   accountTransactionsStatus: ReduxStatus.idle,
   accountRecentTransactions: [],
   accountRecentTransactionsStatus: ReduxStatus.idle,
+  myTransactions: [],
+  myTransactionsStatus: ReduxStatus.idle,
 };
 
 const accountSlice = createSlice({
@@ -76,6 +80,20 @@ const accountSlice = createSlice({
       state.accountRecentTransactionsStatus = ReduxStatus.failed;
       state.accountRecentTransactions = action.payload;
       toast.success('La transacciones recientes se han obtenido con éxito');
+    });
+
+    builder.addCase(getMyTransactions.pending, (state) => {
+      state.myTransactionsStatus = ReduxStatus.pending;
+    });
+    builder.addCase(getMyTransactions.rejected, (state) => {
+      state.myTransactionsStatus = ReduxStatus.failed;
+      state.myTransactions = initialState.myTransactions;
+      toast.error('Ha ocurrido un error al obtener mis transacciones');
+    });
+    builder.addCase(getMyTransactions.fulfilled, (state, action) => {
+      state.myTransactionsStatus = ReduxStatus.failed;
+      state.myTransactions = action.payload;
+      toast.success('Mis transacciones se han obtenido con éxito');
     });
   }
 });

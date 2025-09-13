@@ -1,4 +1,5 @@
 import { generateAccountsMock } from "@/shared/mocks/generateAccountsMock";
+import { generateMyTransactionsMock } from "@/shared/mocks/generateMyTransactionsMock";
 import { generateRecentTransactionsMock } from "@/shared/mocks/generateRecentTransactionsMock";
 import { getAccountByNumberRequest, getAccountTransactionsByNumberRequest } from "@/shared/services/api/accounts/accountsService";
 import { createAsyncThunk } from "@reduxjs/toolkit";
@@ -28,4 +29,11 @@ export const getRecentTransactions = createAsyncThunk('account/getRecentTransact
   
   const mockRecentTransactions = generateRecentTransactionsMock(data.items);
   return mockRecentTransactions;
+});
+
+export const getMyTransactions = createAsyncThunk('account/getMyTransactions', async (accountNumber: number) => {
+  const { data } = await getAccountTransactionsByNumberRequest(accountNumber);
+  
+  const mockMyTransactions = generateMyTransactionsMock(data.items);
+  return mockMyTransactions;
 });

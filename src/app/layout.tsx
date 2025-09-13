@@ -9,7 +9,7 @@ import AppTopbar from "@/shared/layout/templates/AppTopbar";
 import AppDrawer from "@/shared/layout/templates/AppDrawer";
 import AppContentWrapper from "@/shared/layout/templates/AppContentWrapper";
 
-import { StoreProvider } from "./StoreProvider";
+import { Providers } from "./Providers";
 
 const poppinsSans = Poppins({
   variable: "--font-poppins",
@@ -29,7 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider>
+      <Providers>
         <body
           className={`${poppinsSans.variable} antialiased`}
         >
@@ -54,7 +54,7 @@ export default function RootLayout({
             style={{ zIndex: 99999 }}
           />
         </body>
-      </StoreProvider>
+      </Providers>
     </html>
   );
 }

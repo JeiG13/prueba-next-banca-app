@@ -2,7 +2,7 @@ import { IconButton } from '@mui/material';
 import numbro from 'numbro';
 import { FiCopy } from 'react-icons/fi';
 
-import SectionTitle from '@/shared/components/SectionTitle';
+import SectionTitle from '@/shared/components/titles/SectionTitle';
 import { IAccount } from '@/shared/interfaces/Account';
 import { getCurrencyByCode } from '@/shared/helpers/getCurrencyByCode';
 import copyToClipboard from '@/shared/helpers/copyToClipboard';

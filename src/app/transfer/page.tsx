@@ -1,4 +1,4 @@
-import SectionTitle from '@/shared/components/SectionTitle';
+import SectionTitle from '@/shared/components/titles/SectionTitle';
 import React from 'react'
 
 function page() {
