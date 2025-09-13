@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins } from "next/font/google";
+
+import { Bounce, ToastContainer } from "react-toastify";
+
 import "./globals.css";
-import { StoreProvider } from "./StoreProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import AppTopbar from "@/shared/layout/templates/AppTopbar";
+import AppDrawer from "@/shared/layout/templates/AppDrawer";
+import AppContentWrapper from "@/shared/layout/templates/AppContentWrapper";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+import { Providers } from "./Providers";
+
+const poppinsSans = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
 });
 
 export const metadata: Metadata = {
-  title: "Prueba tecnica",
+  title: "Banca net",
   description: "App prueba tecnica",
 };
 
@@ -25,13 +29,32 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <StoreProvider>
+      <Providers>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${poppinsSans.variable} antialiased`}
         >
-          {children}
+          <AppTopbar />
+          <AppDrawer />
+          <AppContentWrapper>
+            {children}
+          </AppContentWrapper>
+
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+            style={{ zIndex: 99999 }}
+          />
         </body>
-      </StoreProvider>
+      </Providers>
     </html>
   );
 }
