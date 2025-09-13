@@ -14,6 +14,7 @@ import transferValidationSchema, { TransferFormInfer } from '../validations/tran
 import AdditionalInfoForm from '../components/AdditionalInfoForm';
 import BackdropLoader from '@/shared/components/backdrops/BackdropLoader';
 import { ReduxStatus } from '@/shared/enums/reduxStatusEnum';
+import { resetTransactionSlice } from '@/shared/store/slices/transactionsSlice';
 
 const steps: StepType[] = [
   { title: 'Paso 1', subtitle: 'Cuenta origen' },
@@ -59,6 +60,7 @@ function TransferStepper() {
   
     return () => {
       dispatch(resetAccountSlice());
+      dispatch(resetTransactionSlice());
     }
   }, [dispatch]);
 
