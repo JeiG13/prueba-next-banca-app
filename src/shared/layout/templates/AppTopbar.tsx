@@ -1,18 +1,29 @@
 "use client";
 import { Avatar, IconButton } from "@mui/material";
+import { useForm } from "react-hook-form";
+import Image from "next/image";
+
 import { useAppDispatch, useAppSelector } from "@/shared/store/hooks";
 import { handleToggleDrawer } from "@/shared/store/slices/uiSlice";
 import { drawerWidth } from "../constants/drawerWidth";
 
-import Image from "next/image";
 import HamburgerIcon from "@/shared/assets/icons/hamburger.svg";
 import NotificationIcon from "@/shared/assets/icons/notification.svg";
-import UserPicture from "@/shared/assets/users/UserProfile.jpg";
+import ControlledTextfield from "@/shared/components/inputs/ControlledTextfield";
+import { MdSearch } from "react-icons/md";
+
+type SearchFormType = {
+  search: string;
+}
 
 const AppTopbar = () => {
   const dispatch = useAppDispatch();
   const { isDrawerOpen } = useAppSelector((state) => state.ui);
   const { loggedUser } = useAppSelector((state) => state.user);
+
+  const { control } = useForm<SearchFormType>({
+    defaultValues: { search: '' }
+  });
 
   return (
     <header
@@ -47,6 +58,15 @@ const AppTopbar = () => {
             width={24}
             className="mr-6"
           />
+
+          <div className="mr-6">
+            <ControlledTextfield<SearchFormType>
+              control={control}
+              name="search"
+              label="Buscar"
+              StartIcon={MdSearch}
+            />
+          </div>
 
           <Avatar
             className="h-[40] w-[40]"

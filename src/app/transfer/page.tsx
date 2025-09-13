@@ -1,10 +1,10 @@
-import SectionTitle from '@/shared/components/titles/SectionTitle';
+import Headline2 from '@/shared/components/titles/Headline2';
 import React from 'react'
 
 function page() {
   return (
     <div>
-      <SectionTitle title="Transferir" />
+      <Headline2 title="Transferir" />
     </div>
   )
 }

@@ -1,11 +1,11 @@
 import React from 'react';
-import SectionTitle from '@/shared/components/titles/SectionTitle';
+import Headline2 from '@/shared/components/titles/Headline2';
 import MyTransactionTabs from '@/features/my-transactions/templates/MyTransactionTabs';
 
 function page() {
   return (
     <div>
-      <SectionTitle title="Mis transacciones" />
+      <Headline2 title="Mis transacciones" />
       <MyTransactionTabs />
     </div>
   )

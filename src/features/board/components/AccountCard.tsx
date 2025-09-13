@@ -2,7 +2,7 @@ import { IconButton } from '@mui/material';
 import numbro from 'numbro';
 import { FiCopy } from 'react-icons/fi';
 
-import SectionTitle from '@/shared/components/titles/SectionTitle';
+import Headline2 from '@/shared/components/titles/Headline2';
 import { IAccount } from '@/shared/interfaces/Account';
 import { getCurrencyByCode } from '@/shared/helpers/getCurrencyByCode';
 import copyToClipboard from '@/shared/helpers/copyToClipboard';
@@ -24,7 +24,7 @@ function AccountCard({ account }: AccountCardProps) {
     <div className="w-full bg-white rounded-sm shadow-md p-4">
       <div className="flex justify-between items-start mb-9">
         <div>
-          <SectionTitle
+          <Headline2
             title={`${account.currency} Cuenta`}
           />
 
@@ -57,7 +57,7 @@ function AccountCard({ account }: AccountCardProps) {
           />
         </div>
       </div>
-      <SectionTitle
+      <Headline2
         title={`${getCurrencyByCode(account.currency)?.symbol ?? ''} 
         ${numbro(account.balance).format({ thousandSeparated: true })}`}
       />

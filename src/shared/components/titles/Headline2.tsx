@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 
-type SectionTitleProps = {
+type Headline2Props = {
   title: string;
   Action?: ReactNode;
 }
 
-function SectionTitle({ title, Action }: SectionTitleProps) {
+function Headline2({ title, Action }: Headline2Props) {
   return (
     <div className="w-full flex justify-between items-center">
       <h1 className="text-xl font-semibold text-[#272727]">
@@ -17,4 +17,4 @@ function SectionTitle({ title, Action }: SectionTitleProps) {
   )
 }
 
-export default SectionTitle;
+export default Headline2;
