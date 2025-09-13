@@ -68,7 +68,7 @@ const AppDrawer = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-start mx-6">
+      <div className="flex flex-col items-center justify-start mx-4">
         <List>
           {
             sidebarRoutes.map((route) => (

@@ -14,12 +14,20 @@ type CustomStepperProps = {
   children: ReactNode;
   activeStep: number;
   steps: StepType[];
+  handleNext: () => void;
+  handleBack: () => void;
+  backButtonLabel?: string,
+  nextButtonLabel?: string,
 }
 
 function CustomStepper({
   children,
   activeStep,
   steps,
+  handleBack, 
+  handleNext,
+  backButtonLabel = 'Atrás',
+  nextButtonLabel = 'Continuar',
 }: CustomStepperProps) {
   return (
       <div className="w-full">
@@ -50,6 +58,39 @@ function CustomStepper({
             {children}
           </div>
         </div>
+          <div className="w-full">
+            <div className="w-full mt-40 mb-10 flex flex-row justify-center items-center">
+              <Button
+                variant="outlined"
+                sx={{
+                  mr: '32px',
+                  textTransform: 'none',
+                  fontSize: '14px',
+                  px: '24px',
+                  py: '8px',
+                  color: '#00593B',
+                  borderColor: '#00593B',
+                }}
+                onClick={handleBack}
+                disabled={activeStep === 0}
+              >
+                {backButtonLabel}
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: 'none',
+                  fontSize: '14px',
+                  px: '24px' ,
+                  py: '8px',
+                  bgcolor: '#00593B',
+                }}
+                onClick={handleNext}
+              >
+                {nextButtonLabel}
+              </Button>
+            </div>
+          </div>
       </div>
   )
 }

@@ -1,12 +1,13 @@
 "use client";
 import { useEffect, useState } from 'react';
-import CustomStepper, { StepType } from '@/shared/templates/CustomStepper';
+import CustomStepper from '@/shared/templates/CustomStepper';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 import { resetAccountSlice } from '@/shared/store/slices/accountSlice';
 import { getAccountsMock } from '@/shared/store/thunks/accountThunk';
 import MountedTabPanel from '@/shared/components/tabs/MountedTabPanel';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import SelectOriginAccount from '../components/SelectOriginAccount';
 import SelectDestinationAccount from '../components/SelectDestinationAccount';
 import InputTransferAmount from '../components/InputTransferAmount';
@@ -15,13 +16,16 @@ import AdditionalInfoForm from '../components/AdditionalInfoForm';
 import BackdropLoader from '@/shared/components/backdrops/BackdropLoader';
 import { ReduxStatus } from '@/shared/enums/reduxStatusEnum';
 import { resetTransactionSlice } from '@/shared/store/slices/transactionsSlice';
+import { IPostTransaction } from '@/shared/interfaces/PostTransaction';
+import { postTransaction } from '@/shared/store/thunks/transactionThunks';
+import { formSteps } from '../constants/formSteps';
 
-const steps: StepType[] = [
-  { title: 'Paso 1', subtitle: 'Cuenta origen' },
-  { title: 'Paso 2', subtitle: 'Cuenta destino' },
-  { title: 'Paso 3', subtitle: 'Monto a transferir' },
-  { title: 'Paso 4', subtitle: 'Datos adicionales' },
-];
+const stepFieldsToValidate: Record<number, (keyof TransferFormInfer)[]> = {
+  0: ['origin'],
+  1: ['destination'],
+  2: ['amount'],
+  3: ['transactionType', 'debitConcept', 'creditConcept', 'reference', 'confirmation'],
+};
 
 const initialValues: TransferFormInfer = {
   origin: null,
@@ -36,6 +40,7 @@ const initialValues: TransferFormInfer = {
 
 function TransferStepper() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const { postTransactionStatus } = useAppSelector((state) => state.transaction);
 
   const [activeStep, setActiveStep] = useState(0);
@@ -47,7 +52,35 @@ function TransferStepper() {
     criteriaMode: 'firstError',
   });
 
-  const handleNext = () => {
+  const onSubmit: SubmitHandler<TransferFormInfer> = async (data) => {
+    const transaction: IPostTransaction = {
+      destination: data.destination?.account_number.toString() ?? '',
+      origin: data.origin?.account_number.toString() ?? '',
+      amount: {
+        value: Number(data.amount) ?? 0,
+        currency: data.origin?.currency ?? '',
+      },
+    };
+
+    const actionResult = await dispatch(postTransaction(transaction));
+
+    if (postTransaction.fulfilled.match(actionResult)) {
+      dispatch(getAccountsMock(1));
+      router.push('/my-transactions');
+    }
+  };
+
+  const handleNext = async () => {
+    const fieldsToValidate = stepFieldsToValidate[activeStep];
+    const isValid = await methods.trigger(fieldsToValidate);
+    
+    if (!isValid) return;
+    
+    if (activeStep === (formSteps.length - 1)) {
+      methods.handleSubmit(onSubmit)();
+      return;
+    }
+  
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -73,31 +106,28 @@ function TransferStepper() {
         />
         <CustomStepper
           activeStep={activeStep}
-          steps={steps}
+          steps={formSteps}
+          handleBack={handleBack}
+          handleNext={handleNext}
+          nextButtonLabel={activeStep === (formSteps.length - 1) ? 'Transferir' : 'Continuar'}
         >
           <MountedTabPanel value={activeStep} index={0}>
             <div className="w-full px-8 py-10">
-              <SelectOriginAccount handleNext={handleNext} />
+              <SelectOriginAccount />
             </div>
           </MountedTabPanel>
           <MountedTabPanel value={activeStep} index={1}>
             <div className="w-full px-8 py-10">
-              <SelectDestinationAccount
-                handleNext={handleNext}
-                handleBack={handleBack}
-              />
+              <SelectDestinationAccount />
             </div>
           </MountedTabPanel>
           <MountedTabPanel value={activeStep} index={2}>
             <div className="w-full px-8 py-10">
-              <InputTransferAmount
-                handleBack={handleBack}
-                handleNext={handleNext}
-              />
+              <InputTransferAmount />
             </div>
           </MountedTabPanel>
           <MountedTabPanel value={activeStep} index={3}>
-            <AdditionalInfoForm handleBack={handleBack} />
+            <AdditionalInfoForm />
           </MountedTabPanel>
         </CustomStepper>
       </div>

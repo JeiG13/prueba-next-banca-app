@@ -23,8 +23,21 @@ const transferValidationSchema = z.object({
   confirmation: z.string().optional(),
   amount: z
     .string({ error: 'El monto es requerido' })
+    .min(1, 'El monto es obligatorio')
     .refine((value) => !Number.isNaN(Number(value)), { message: 'El monto debe ser un numero' })
-});
+}).superRefine((data, ctx) => {
+    if (data.amount && data.origin?.balance != null) {
+      const amountNumber = Number(data.amount);
+
+      if (amountNumber > data.origin.balance) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['amount'],
+          message: "Su saldo es insuficiente para realizar esta transacción",
+        });
+      }
+    }
+  });
 
 export type TransferFormInfer = z.infer<typeof transferValidationSchema>;
 

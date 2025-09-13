@@ -6,35 +6,16 @@ import { useAppSelector } from '@/shared/store/hooks';
 import { ReduxStatus } from '@/shared/enums/reduxStatusEnum';
 import { useFormContext } from 'react-hook-form';
 import AccountAutocompleteInfo from './AccountAutocompleteInfo';
-import { Button } from '@mui/material';
 import { TransferFormInfer } from '../validations/transferValidationSchema';
 
-type Props = {
-  handleNext: () => void;
-}
-
-function SelectOriginAccount({
-  handleNext
-}: Props) {
+function SelectOriginAccount() {
   const { accountsMock, accountsMockStatus } = useAppSelector((state) => state.account);
-  const { control, getValues, setError, clearErrors } = useFormContext<TransferFormInfer>();
-
-  const handleNextStep = () => {
-    const data = getValues();
-
-    if (!data.origin?.id) {
-      setError('origin', { message: 'La cuenta de origen es obligatoria' })
-      return;
-    }
-
-    clearErrors('origin');
-    handleNext();
-  }
+  const { control } = useFormContext<TransferFormInfer>();
 
   return (
     <div className="w-full">
       <div className="w-full flex items-center justify-center">
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-2/3 lg:w-1/2">
           <ControlledAutoComplete<TransferFormInfer, IAccount>
             disabled={accountsMockStatus === ReduxStatus.pending}
             control={control}
@@ -54,38 +35,6 @@ function SelectOriginAccount({
             selectFullObject
           />
         </div>
-      </div>
-      <div className="w-full">
-          <div className="w-full mt-40 mb-10 flex flex-row justify-center items-center">
-            <Button
-              variant="outlined"
-              sx={{
-                mr: '32px',
-                textTransform: 'none',
-                fontSize: '14px',
-                px: '24px',
-                py: '8px',
-                color: '#00593B',
-                borderColor: '#00593B',
-              }}
-              disabled
-            >
-              Atrás
-            </Button>
-            <Button
-              variant="contained"
-              sx={{
-                textTransform: 'none',
-                fontSize: '14px',
-                px: '24px' ,
-                py: '8px',
-                bgcolor: '#00593B',
-              }}
-              onClick={handleNextStep}
-            >
-              Continuar
-            </Button>
-          </div>
       </div>
     </div>
   )

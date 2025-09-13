@@ -1,24 +1,16 @@
 "use client";
+import { useEffect, useMemo } from 'react'
 import ControlledAutoComplete from '@/shared/components/inputs/ControlledAutocomplete';
 import { ReduxStatus } from '@/shared/enums/reduxStatusEnum';
-import React, { useEffect, useMemo } from 'react'
 import { IAccount } from '../../../shared/interfaces/Account';
 import { useFormContext } from 'react-hook-form';
 import { useAppSelector } from '@/shared/store/hooks';
 import AccountAutocompleteInfo from './AccountAutocompleteInfo';
 import { TransferFormInfer } from '../validations/transferValidationSchema';
-import { Button } from '@mui/material';
 
-type Props = {
-  handleNext: () => void;
-  handleBack: () => void;
-}
-
-function SelectDestinationAccount({
-  handleBack, handleNext,
-}: Props) {
+function SelectDestinationAccount() {
   const { accountsMock, accountsMockStatus } = useAppSelector((state) => state.account);
-  const { control, watch, setValue, setError, getValues, clearErrors } = useFormContext<TransferFormInfer>();
+  const { control, watch, setValue } = useFormContext<TransferFormInfer>();
 
   const selectedOrigin = watch('origin');
 
@@ -31,22 +23,10 @@ function SelectDestinationAccount({
     [selectedOrigin, accountsMock],
   );
 
-  const handleNextStep = () => {
-    const data = getValues();
-
-    if (!data.destination?.id) {
-      setError('destination', { message: 'La cuenta de destino es obligatoria' })
-      return;
-    }
-
-    clearErrors('destination');
-    handleNext();
-  }
-
   return (
     <div className="w-full">
       <div className="w-full flex items-center justify-center">
-        <div className="w-full md:w-1/2">
+        <div className="w-full md:w-2/3 lg:w-1/2">
           <ControlledAutoComplete<TransferFormInfer, IAccount>
             disabled={accountsMockStatus === ReduxStatus.pending}
             control={control}
@@ -65,38 +45,6 @@ function SelectDestinationAccount({
               <AccountAutocompleteInfo account={value} key={value.id} />
             )}
           />
-        </div>
-      </div>
-      <div className="w-full">
-        <div className="w-full mt-40 mb-10 flex flex-row justify-center items-center">
-          <Button
-            variant="outlined"
-            sx={{
-              mr: '32px',
-              textTransform: 'none',
-              fontSize: '14px',
-              px: '24px',
-              py: '8px',
-              color: '#00593B',
-              borderColor: '#00593B',
-            }}
-            onClick={handleBack}
-          >
-            Atrás
-          </Button>
-          <Button
-            variant="contained"
-            sx={{
-              textTransform: 'none',
-              fontSize: '14px',
-              px: '24px' ,
-              py: '8px',
-              bgcolor: '#00593B',
-            }}
-            onClick={handleNextStep}
-          >
-            Continuar
-          </Button>
         </div>
       </div>
     </div>
