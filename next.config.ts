@@ -6,4 +6,16 @@ const nextConfig: NextConfig = {
   },
 };
 
+module.exports = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/board',
+        permanent: true,
+      },
+    ]
+  },
+}
+
 export default nextConfig;
