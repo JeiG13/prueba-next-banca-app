@@ -2,11 +2,11 @@
 import { useRouter } from "next/navigation";
 
 function AllTransactionsButton() {
-    const router = useRouter();
+  const router = useRouter();
 
-    const handleNavigate = () => {
-      router.push('/my-transactions');
-    };
+  const handleNavigate = () => {
+    router.push('/my-transactions');
+  };
   return (
     <div>
       <button

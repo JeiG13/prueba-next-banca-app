@@ -52,11 +52,11 @@ function ControlledTextfield<T extends FieldValues>({
 					className={className}
           slotProps={{
 						input: {
-							startAdornment: (
+							startAdornment: StartIcon ? (
 								<InputAdornment position="start">
-									{StartIcon ? <StartIcon size={24} color="#8D918D" /> : <span style={{ width: 24, display: 'inline-block' }} />}
+									{<StartIcon size={24} color="#8D918D" />}
 								</InputAdornment>
-							)
+							) : null
 						}
 					}}
 					fullWidth

@@ -1,11 +1,12 @@
 type Caption1Props = {
   title: string;
+  className?: string;
 }
 
-function Caption1({ title }: Caption1Props) {
+function Caption1({ title, className = '' }: Caption1Props) {
   return (
-    <div className="w-full flex justify-between items-center">
-      <h1 className="text-sm font-medium text-[#272727]">
+    <div className="flex items-center">
+      <h1 className={`text-sm font-medium text-[#272727] ${className}`}>
         {title}
       </h1>
     </div>

@@ -12,7 +12,9 @@ type Props<TForm extends FieldValues, TOptions> = {
 	labelKey: keyof TOptions;
 	noOptionsLabel?: string;
 	sx?: SxProps<Theme>;
+	selectFullObject?: boolean;
 	renderOption?: (props: HTMLAttributes<HTMLLIElement>, option: TOptions) => ReactNode;
+	renderValue?: (value: TOptions) => ReactNode;
 };
 
 function ControlledAutoComplete<T extends FieldValues, TOption>({
@@ -26,6 +28,8 @@ function ControlledAutoComplete<T extends FieldValues, TOption>({
 	labelKey,
 	sx = {},
 	renderOption,
+	selectFullObject,
+	renderValue,
 }: Props<T, TOption>) {
 	return (
 		<Controller
@@ -46,7 +50,11 @@ function ControlledAutoComplete<T extends FieldValues, TOption>({
 								return;
 							}
 
-              onChange(typeof value === 'string' ? value : value?.[codeKey]);
+							if (selectFullObject) {
+								onChange(value);
+							} else {
+								onChange(typeof value === 'string' ? value : value?.[codeKey]);
+							}
 						}}
 						value={currentOption as TOption}
 						id={`autocomplete-${name}`}
@@ -65,7 +73,7 @@ function ControlledAutoComplete<T extends FieldValues, TOption>({
 									String(option?.[labelKey])?.toLocaleLowerCase().includes(inputValue.toLowerCase())
 							)
 						}
-						renderOption={({key: renderKey, ...props}, option) =>
+						renderOption={({ key: renderKey, ...props }, option) =>
 							renderOption ? (
 								renderOption(props, option)
 							) : (
@@ -76,6 +84,7 @@ function ControlledAutoComplete<T extends FieldValues, TOption>({
 								</ListItem>
 							)
 						}
+						renderValue={renderValue && ((value) => renderValue(value))}
 						renderInput={(params) => (
 							<TextField
 								{...params}
