@@ -46,7 +46,7 @@ function SelectDestinationAccount({
   return (
     <div className="w-full">
       <div className="w-full flex items-center justify-center">
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <ControlledAutoComplete<TransferFormInfer, IAccount>
             disabled={accountsMockStatus === ReduxStatus.pending}
             control={control}

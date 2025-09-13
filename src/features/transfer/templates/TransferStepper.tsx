@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import CustomStepper, { StepType } from '@/shared/templates/CustomStepper';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useAppDispatch } from '@/shared/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 import { resetAccountSlice } from '@/shared/store/slices/accountSlice';
 import { getAccountsMock } from '@/shared/store/thunks/accountThunk';
 import MountedTabPanel from '@/shared/components/tabs/MountedTabPanel';
@@ -12,6 +12,8 @@ import SelectDestinationAccount from '../components/SelectDestinationAccount';
 import InputTransferAmount from '../components/InputTransferAmount';
 import transferValidationSchema, { TransferFormInfer } from '../validations/transferValidationSchema';
 import AdditionalInfoForm from '../components/AdditionalInfoForm';
+import BackdropLoader from '@/shared/components/backdrops/BackdropLoader';
+import { ReduxStatus } from '@/shared/enums/reduxStatusEnum';
 
 const steps: StepType[] = [
   { title: 'Paso 1', subtitle: 'Cuenta origen' },
@@ -23,7 +25,7 @@ const steps: StepType[] = [
 const initialValues: TransferFormInfer = {
   origin: null,
   destination: null,
-  amount: 0,
+  amount: '',
   creditConcept: '',
   transactionType: null,
   debitConcept: '',
@@ -33,6 +35,7 @@ const initialValues: TransferFormInfer = {
 
 function TransferStepper() {
   const dispatch = useAppDispatch();
+  const { postTransactionStatus } = useAppSelector((state) => state.transaction);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -62,6 +65,10 @@ function TransferStepper() {
   return (
     <FormProvider {...methods}>
       <div className="w-full mt-4">
+        <BackdropLoader
+          title="Realizando transacción"
+          isLoading={postTransactionStatus === ReduxStatus.pending}
+        />
         <CustomStepper
           activeStep={activeStep}
           steps={steps}

@@ -16,6 +16,8 @@ import { IDateFilters } from "../interfaces/DateFilters";
 import filterTransactions from "../helpers/filterTransactions";
 import { isBefore } from "date-fns";
 import dateFiltersValidationSchema from "../validations/dateFiltersValidationSchema";
+import HandleLoadingState from "@/shared/templates/HandleLoadingState";
+import { ReduxStatus } from "@/shared/enums/reduxStatusEnum";
 
 const columns: Column<ITransaction>[] = [
   { key: 'transaction_date', label: "Fecha", type: 'date' },
@@ -26,7 +28,7 @@ const columns: Column<ITransaction>[] = [
 
 function MyTransactionsTable() {
   const dispatch = useAppDispatch();
-  const { myTransactions } = useAppSelector((state) => state.account);
+  const { myTransactions, myTransactionsStatus } = useAppSelector((state) => state.account);
 
   const { control, watch } = useForm<IDateFilters>({
     defaultValues: dateFiltersInitialValues,
@@ -74,11 +76,17 @@ function MyTransactionsTable() {
 					/>
         </div>
       </div>
-      <div className="mt-4">
-        <BasicTable<ITransaction>
-          columns={columns}
-          data={filteredTransactions}
-        />
+      <div className="mt-4 w-full">
+        <HandleLoadingState
+          isLoading={myTransactionsStatus === ReduxStatus.pending}
+          noItemsLabel="No se han encontrado cuentas"
+          areThereItems={myTransactions.length > 0}
+        >
+          <BasicTable<ITransaction>
+            columns={columns}
+            data={filteredTransactions}
+          />
+        </HandleLoadingState>
       </div>
     </div>
   );

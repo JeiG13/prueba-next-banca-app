@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Divider, Drawer, List } from "@mui/material";
+import { Divider, Drawer, List, useMediaQuery, useTheme } from "@mui/material";
 import Image from "next/image";
 
-import { useAppSelector } from "@/shared/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/store/hooks";
 import { useForm } from "react-hook-form";
 
 import Headline3 from "@/shared/components/titles/Headline3";
@@ -16,6 +16,7 @@ import { drawerWidth } from "../constants/drawerWidth";
 import NavigationItem from "../components/NavigationItem";
 import { sidebarRoutes } from "../constants/sidebarRoutes";
 import ControlledAutoComplete from "@/shared/components/inputs/ControlledAutocomplete";
+import { handleToggleDrawer } from "@/shared/store/slices/uiSlice";
 
 type ExchangeFormType = {
   localCurrency?: number | null;
@@ -29,16 +30,25 @@ type Currency = {
 
 const AppDrawer = () => {
   const { isDrawerOpen } = useAppSelector((state) => state.ui);
+  const dispatch = useAppDispatch();
 
-    const { control } = useForm<ExchangeFormType>({
-      defaultValues: { foreignCurrency: null, localCurrency: null }
-    });
+  const { control } = useForm<ExchangeFormType>({
+    defaultValues: { foreignCurrency: null, localCurrency: null }
+  });
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const handleDrawer = () => {
+    dispatch(handleToggleDrawer());
+  };
 
   return (
     <Drawer
-      variant="persistent"
+      variant={isMobile ? 'temporary' : 'persistent'}
       anchor="left"
-      open={isDrawerOpen}
+      open={isDrawerOpen} 
+      onClose={isMobile ? handleDrawer : undefined}
       slotProps={{
         paper: {
           className: `text-white flex-shrink-0`,

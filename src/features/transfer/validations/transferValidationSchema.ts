@@ -21,13 +21,9 @@ const transferValidationSchema = z.object({
   creditConcept: z.string({ error: 'El concepto de crédito es obligatorio' }).min(1, 'El concepto de crédito es obligatorio'),
   reference: z.string().optional(),
   confirmation: z.string().optional(),
-  amount: z.union([
-		z
-			.string({ error: 'El monto es requerido' })
-			.refine((value) => !Number.isNaN(Number(value)), { message: 'El monto debe ser un numero' })
-			.transform((value) => Number(value)),
-		z.number({ error: 'El monto es requerido' })
-	]),
+  amount: z
+    .string({ error: 'El monto es requerido' })
+    .refine((value) => !Number.isNaN(Number(value)), { message: 'El monto debe ser un numero' })
 });
 
 export type TransferFormInfer = z.infer<typeof transferValidationSchema>;

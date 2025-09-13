@@ -34,7 +34,7 @@ function AdditionalInfoForm({
       destination: data.destination?.account_number.toString() ?? '',
       origin: data.origin?.account_number.toString() ?? '',
       amount: {
-        value: data.amount ?? 0,
+        value: Number(data.amount) ?? 0,
         currency: data.origin?.currency ?? '',
       },
     };

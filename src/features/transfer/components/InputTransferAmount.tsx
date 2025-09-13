@@ -22,13 +22,13 @@ function InputTransferAmount({
       return;
     }
 
-    if (data.amount > (data.origin?.balance ?? 0)) {
-      setError('amount', { message: 'Su saldo es insuficiente para realizar esta transacción' })
+    if (Number.isNaN(Number(data.amount))) {
+      setError('amount', { message: 'El monto debe ser un número' })
       return;
     }
 
-    if (Number.isNaN(Number(data.amount))) {
-      setError('amount', { message: 'El monto debe ser un número' })
+    if (Number(data.amount) > (data.origin?.balance ?? 0)) {
+      setError('amount', { message: 'Su saldo es insuficiente para realizar esta transacción' })
       return;
     }
 
@@ -39,7 +39,7 @@ function InputTransferAmount({
   return (
     <div className="w-full">
       <div className="w-full flex items-center justify-center">
-        <div className="w-1/2">
+        <div className="w-full md:w-1/2">
           <ControlledTextfield<TransferFormInfer>
             name="amount"
             control={control}

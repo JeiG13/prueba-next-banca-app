@@ -1,8 +1,10 @@
 "use client";
+import { ReduxStatus } from "@/shared/enums/reduxStatusEnum";
 import { ITransaction } from "@/shared/interfaces/Transaction";
 import { useAppDispatch, useAppSelector } from "@/shared/store/hooks";
 import { getRecentTransactions } from "@/shared/store/thunks/accountThunk";
 import BasicTable, { Column } from "@/shared/templates/BasicTable";
+import HandleLoadingState from "@/shared/templates/HandleLoadingState";
 import { useEffect } from "react";
 
 const columns: Column<ITransaction>[] = [
@@ -13,7 +15,7 @@ const columns: Column<ITransaction>[] = [
 ];
 
 function RecentTransactionsTable() {
-  const { accountRecentTransactions } = useAppSelector((state) => state.account);
+  const { accountRecentTransactions, accountRecentTransactionsStatus } = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -22,10 +24,16 @@ function RecentTransactionsTable() {
 
   return (
     <div className="w-full mt-6">
-      <BasicTable<ITransaction>
-        columns={columns}
-        data={accountRecentTransactions}
-      />
+        <HandleLoadingState
+          isLoading={accountRecentTransactionsStatus === ReduxStatus.pending}
+          noItemsLabel="No se han encontrado cuentas"
+          areThereItems={accountRecentTransactions.length > 0}
+        >
+          <BasicTable<ITransaction>
+            columns={columns}
+            data={accountRecentTransactions}
+          />
+        </HandleLoadingState>
     </div>
   );
 };

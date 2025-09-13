@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, IconButton } from "@mui/material";
+import { Avatar, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 
@@ -25,14 +25,17 @@ const AppTopbar = () => {
     defaultValues: { search: '' }
   });
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
   return (
     <header
       className={`
-        fixed top-0 right-0 h-16 shadow-md bg-white flex items-center 
+        fixed top-0 right-0 h-16 shadow-md bg-white flex items-center z-[999]
         transition-[width] duration-300 
       `}
         style={{
-          width: isDrawerOpen ? `calc(100% - ${drawerWidth}px)` : "100%",
+          width: !isMobile &&isDrawerOpen ? `calc(100% - ${drawerWidth}px)` : "100%",
         }}
     >
       <div className="flex w-full items-center justify-between px-6">
